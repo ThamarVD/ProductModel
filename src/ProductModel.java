@@ -8,7 +8,7 @@ import java.util.Scanner;
 import static java.nio.file.StandardOpenOption.CREATE;
 
 public class ProductModel {
-    public static ArrayList<String> products = new ArrayList<String>();
+    public static ArrayList<Product> products = new ArrayList<Product>();
     public static Scanner userIn = new Scanner(System.in);
 
     public static void main(String[] args) {
@@ -25,7 +25,7 @@ public class ProductModel {
             description = SafeInput.getNonZeroLenString(userIn, "What is this product's description");
             cost = SafeInput.getDouble(userIn, "What is the cost of this product");
 
-            products.add(id + ", " + name + ", " + description + ", " + cost);
+            products.add(new Product(name, description, id, cost));
         }while(SafeInput.getYNConfirm(userIn, "Would you like to add another product"));
 
         try
@@ -35,9 +35,9 @@ public class ProductModel {
             BufferedWriter writer =
                     new BufferedWriter(new OutputStreamWriter(out));
 
-            for(String rec : products)
+            for(Product rec : products)
             {
-                writer.write(rec, 0, rec.length());
+                writer.write(rec.toCSVDataRecord(), 0, rec.toCSVDataRecord().length());
                 writer.newLine();
 
             }
